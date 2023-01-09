@@ -78,13 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.brown, fontSize: 14),
           showPageLimitOptions: true,
           pageLimitOptions: pageLimitOptions,
-          onPageLimitChanged: (int? pageLimit) {
-            print('Page Limit Changed: $pageLimit');
-            setState(() {
-              currentPage = 1;
-              currentPageLimit = pageLimit ?? 15;
-            });
-          },
+          onPageLimitChanged: _onPageLimitChanged,
           previousPageIcon: Icons.keyboard_arrow_left,
           backToFirstPageIcon: Icons.first_page,
           nextPageIcon: Icons.keyboard_arrow_right,
@@ -122,6 +116,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
       ),
     );
+  }
+
+  _onPageLimitChanged(int? pageLimit) {
+    setState(() {
+      currentPage = 1;
+      currentPageLimit = pageLimit ?? 15;
+    });
   }
 
   _onChangePage(int page) async {
