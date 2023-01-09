@@ -30,6 +30,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentPage = 1;
+  int currentPageLimit = 15;
+  int totalDataCount = 100;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +42,31 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: FlutterCustomPagination(
-          currentPage: 1,
-          limitPerPage: 10,
-          totalDataCount: 100,
+          currentPage: currentPage,
+          limitPerPage: currentPageLimit,
+          totalDataCount: totalDataCount,
           onPreviousPage: (int page) {
             print('Previous Page: $page');
+            setState(() {
+              currentPage = page;
+            });
           },
           onNextPage: (int page) {
             print('Next Page: $page');
+            setState(() {
+              currentPage = page;
+            });
+          },
+          backgroundColor: Theme.of(context).colorScheme.background,
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.brown, fontSize: 18),
+          showPageLimitOptions: true,
+          pageLimitOptions: const [15, 30, 50],
+          onPageLimitChanged: (int? pageLimit) {
+            print('Page Limit Changed: $pageLimit');
+            setState(() {
+              currentPage = 1;
+              currentPageLimit = pageLimit ?? 15;
+            });
           },
         ),
       ),
