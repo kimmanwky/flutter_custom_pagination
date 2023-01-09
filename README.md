@@ -7,7 +7,7 @@
 
 A simple package to help you paginate your data, in web and mobile. This custom pagination is created due to inflexibility of the Flutter's paginated data table.
 
-Feel to contribute to this package to enhance the look and feel of the pagination.
+Current look and feel are based on Material Design. Feel to contribute to this package to enhance the look and feel of the pagination.
 <br><br>
 
 ## Screenshot image

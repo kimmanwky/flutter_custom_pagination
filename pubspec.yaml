@@ -1,7 +1,8 @@
 name: flutter_custom_pagination
 description: A new Flutter package project.
 version: 0.1.0
-homepage:
+homepage: https://github.com/kimmanwky/flutter_custom_pagination
+repository: https://github.com/kimmanwky/flutter_custom_pagination
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
