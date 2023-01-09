@@ -288,6 +288,7 @@ class FlutterCustomPagination extends StatelessWidget {
                         (int item) => Center(child: Text('$item')),
                       )
                       .toList(),
+                  isDense: true,
                 ),
               ),
             const SizedBox(width: 5),
