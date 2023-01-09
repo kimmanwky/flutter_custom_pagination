@@ -51,8 +51,20 @@ class _MyHomePageState extends State<MyHomePage> {
               currentPage = page;
             });
           },
+          onBackToFirstPage: (int page) {
+            print('Back to First Page');
+            setState(() {
+              currentPage = 1;
+            });
+          },
           onNextPage: (int page) {
             print('Next Page: $page');
+            setState(() {
+              currentPage = page;
+            });
+          },
+          onGoToLastPage: (int page) {
+            print('Go to Last Page');
             setState(() {
               currentPage = page;
             });
@@ -68,6 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
               currentPageLimit = pageLimit ?? 15;
             });
           },
+          previousPageIcon: Icons.keyboard_arrow_left,
+          backToFirstPageIcon: Icons.first_page,
+          nextPageIcon: Icons.keyboard_arrow_right,
+          goToLastPageIcon: Icons.last_page,
         ),
       ),
     );

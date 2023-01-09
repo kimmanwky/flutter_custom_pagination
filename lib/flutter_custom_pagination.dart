@@ -17,6 +17,10 @@ class FlutterCustomPagination extends StatelessWidget {
     this.showPageLimitOptions = false,
     this.pageLimitOptions = const [10, 20, 50],
     this.onPageLimitChanged,
+    this.previousPageIcon = Icons.keyboard_arrow_left,
+    this.nextPageIcon = Icons.keyboard_arrow_right,
+    this.backToFirstPageIcon = Icons.first_page,
+    this.goToLastPageIcon = Icons.last_page,
   })  : assert(showPageLimitOptions == true && onPageLimitChanged != null,
             'onPageLimitChanged must not be empty if showPageLimitOptions is true'),
         assert(currentPage > 0, 'currentPage must be greater than 0'),
@@ -126,13 +130,61 @@ class FlutterCustomPagination extends StatelessWidget {
   ///
   final Function(int?)? onPageLimitChanged;
 
+  ///
+  /// The icon of the previous page button.
+  /// <br><br>
+  /// This parameter is optional.<br>
+  /// If this parameter is empty, the default icon will be used.<br>
+  /// The default icon is "Icons.keyboard_arrow_left".<br>
+  ///
+  /// See also:
+  /// * [Icons.keyboard_arrow_left]
+  ///
+  final IconData? previousPageIcon;
+
+  ///
+  /// The icon of the next page button.
+  /// <br><br>
+  /// This parameter is optional.<br>
+  /// If this parameter is empty, the default icon will be used.<br>
+  /// The default icon is "Icons.keyboard_arrow_right".<br>
+  ///
+  /// See also:
+  /// * [Icons.keyboard_arrow_right]
+  ///
+  final IconData? nextPageIcon;
+
+  ///
+  /// The icon of the back to first page button.
+  /// <br><br>
+  /// This parameter is optional.<br>
+  /// If this parameter is empty, the default icon will be used.<br>
+  /// The default icon is "Icons.first_page".<br>
+  ///
+  /// See also:
+  /// * [Icons.first_page]
+  ///
+  final IconData? backToFirstPageIcon;
+
+  ///
+  /// The icon of the go to last page button.
+  /// <br><br>
+  /// This parameter is optional.<br>
+  /// If this parameter is empty, the default icon will be used.<br>
+  /// The default icon is "Icons.last_page".<br>
+  ///
+  /// See also:
+  /// * [Icons.last_page]
+  ///
+  final IconData? goToLastPageIcon;
+
   @override
   Widget build(BuildContext context) {
     assert(showPageLimitOptions == true && pageLimitOptions.contains(limitPerPage),
         'value "limitPerPage" must be included in "pageLimitOptions" listing');
 
     double _fontSize = textStyle?.fontSize ?? 14;
-    double _iconRatio = 1.2;
+    double _iconRatio = 1.5;
     double _iconSize = _fontSize * _iconRatio;
     int _lastPage = (totalDataCount / limitPerPage).ceil() <= 0 ? 1 : (totalDataCount / limitPerPage).ceil();
     assert(currentPage <= _lastPage, 'currentPage must be less than or equal to the last page number');
@@ -157,7 +209,7 @@ class FlutterCustomPagination extends StatelessWidget {
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
-                  Icons.keyboard_double_arrow_left,
+                  backToFirstPageIcon ?? Icons.first_page,
                   color: _hasPrevPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
@@ -170,7 +222,7 @@ class FlutterCustomPagination extends StatelessWidget {
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
-                  Icons.keyboard_arrow_left,
+                  previousPageIcon ?? Icons.keyboard_arrow_left,
                   color: _hasPrevPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
@@ -189,7 +241,7 @@ class FlutterCustomPagination extends StatelessWidget {
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
-                  Icons.keyboard_arrow_right,
+                  nextPageIcon ?? Icons.keyboard_arrow_right,
                   color: _hasNextPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
@@ -204,7 +256,7 @@ class FlutterCustomPagination extends StatelessWidget {
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
-                  Icons.keyboard_double_arrow_right,
+                  goToLastPageIcon ?? Icons.last_page,
                   color: _hasNextPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
