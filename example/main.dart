@@ -1,49 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_pagination/flutter_custom_pagination.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Custom Pagination Sample',
-      home: MyHomePage(title: 'Flutter Custom Pagination Sample'),
+    return MaterialApp(
+      title: 'Flutter Custom Pagination Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Custom Pagination Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
+  const MyHomePage({super.key, required this.title});
+  final String title;
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title!),
+        title: Text(widget.title),
       ),
-      body: const Center(
-        child: FlutterCustomPagination(),
+      body: Center(
+        child: FlutterCustomPagination(
+          currentPage: 1,
+          limitPerPage: 10,
+          totalDataCount: 100,
+          onPreviousPage: (int page) {
+            print('Previous Page: $page');
+          },
+          onNextPage: (int page) {
+            print('Next Page: $page');
+          },
+        ),
       ),
     );
   }
