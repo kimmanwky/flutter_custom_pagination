@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_pagination/flutter_custom_pagination.dart';
+import 'package:flutter_custom_pagination/flutter_custom_pagination_options.dart';
 
 // ignore this package, it's just for the example
 import 'package:diox/diox.dart';
@@ -64,28 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: FlutterCustomPagination(
-          currentPage: currentPage,
-          limitPerPage: currentPageLimit,
-          totalDataCount: totalDataCount,
-          onPreviousPage: _onChangePage,
-          onBackToFirstPage: _onChangePage,
-          onNextPage: _onChangePage,
-          onGoToLastPage: _onChangePage,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          textStyle: Theme.of(context)
-              .textTheme
-              .labelMedium
-              ?.copyWith(color: Colors.brown, fontSize: 14),
-          showPageLimitOptions: true,
-          pageLimitOptions: pageLimitOptions,
-          onPageLimitChanged: _onPageLimitChanged,
-          previousPageIcon: Icons.keyboard_arrow_left,
-          backToFirstPageIcon: Icons.first_page,
-          nextPageIcon: Icons.keyboard_arrow_right,
-          goToLastPageIcon: Icons.last_page,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 3,
+        padding: const EdgeInsets.all(10.0),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) =>
+              MediaQuery.of(context).size.width >= 600
+                  ? _renderLargeScreenPagination()
+                  : _renderSmallScreenPagination(),
         ),
       ),
       body: SingleChildScrollView(
@@ -122,11 +109,90 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _onPageLimitChanged(int? pageLimit) {
+  ///
+  /// render small screen size example
+  /// e.g. mobile screen size
+  ///
+  _renderSmallScreenPagination() {
+    TextStyle? _textStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: Colors.brown,
+          fontSize: 14,
+        );
+
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        FlutterCustomPagination(
+          currentPage: currentPage,
+          limitPerPage: currentPageLimit,
+          totalDataCount: totalDataCount,
+          onPreviousPage: _onChangePage,
+          onBackToFirstPage: _onChangePage,
+          onNextPage: _onChangePage,
+          onGoToLastPage: _onChangePage,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          textStyle: _textStyle,
+          previousPageIcon: Icons.keyboard_arrow_left,
+          backToFirstPageIcon: Icons.first_page,
+          nextPageIcon: Icons.keyboard_arrow_right,
+          goToLastPageIcon: Icons.last_page,
+        ),
+        FlutterCustomPaginationOptions(
+          limitPerPage: currentPageLimit,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          textStyle: _textStyle,
+          pageLimitOptions: pageLimitOptions,
+          onPageLimitChanged: _onPageLimitChanged,
+        ),
+      ],
+    );
+  }
+
+  ///
+  /// render large screen size example
+  /// e.g. tablet and desktop screen size
+  ///
+  _renderLargeScreenPagination() {
+    TextStyle? _textStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: Colors.brown,
+          fontSize: 14,
+        );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        FlutterCustomPaginationOptions(
+          limitPerPage: currentPageLimit,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          textStyle: _textStyle,
+          pageLimitOptions: pageLimitOptions,
+          onPageLimitChanged: _onPageLimitChanged,
+        ),
+        FlutterCustomPagination(
+          currentPage: currentPage,
+          limitPerPage: currentPageLimit,
+          totalDataCount: totalDataCount,
+          onPreviousPage: _onChangePage,
+          onBackToFirstPage: _onChangePage,
+          onNextPage: _onChangePage,
+          onGoToLastPage: _onChangePage,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          textStyle: _textStyle,
+          previousPageIcon: Icons.keyboard_arrow_left,
+          backToFirstPageIcon: Icons.first_page,
+          nextPageIcon: Icons.keyboard_arrow_right,
+          goToLastPageIcon: Icons.last_page,
+        ),
+      ],
+    );
+  }
+
+  _onPageLimitChanged(int? pageLimit) async {
     setState(() {
       currentPage = 1;
       currentPageLimit = pageLimit ?? 15;
     });
+    await _getSampleData();
   }
 
   _onChangePage(int page) async {

@@ -14,16 +14,11 @@ class FlutterCustomPagination extends StatelessWidget {
     this.onGoToLastPage,
     this.backgroundColor,
     this.textStyle,
-    this.showPageLimitOptions = false,
-    this.pageLimitOptions = const [10, 20, 50],
-    this.onPageLimitChanged,
     this.previousPageIcon = Icons.keyboard_arrow_left,
     this.nextPageIcon = Icons.keyboard_arrow_right,
     this.backToFirstPageIcon = Icons.first_page,
     this.goToLastPageIcon = Icons.last_page,
-  })  : assert(showPageLimitOptions == true && onPageLimitChanged != null,
-            'onPageLimitChanged must not be empty if showPageLimitOptions is true'),
-        assert(currentPage > 0, 'currentPage must be greater than 0'),
+  })  : assert(currentPage > 0, 'currentPage must be greater than 0'),
         assert(limitPerPage > 0, 'limitPerPage must be greater than 0'),
         assert(totalDataCount >= 0,
             'totalDataCount must be greater than or equal to 0');
@@ -48,7 +43,6 @@ class FlutterCustomPagination extends StatelessWidget {
   /// The limit per page.
   /// <br><br>
   /// Must be greater than 0.<br>
-  /// Must be included in the "pageLimitOptions" listing if "showPageLimitOptions" is true.<br>
   ///
   final int limitPerPage;
 
@@ -107,31 +101,6 @@ class FlutterCustomPagination extends StatelessWidget {
   final TextStyle? textStyle;
 
   ///
-  /// The flag to show the page limit options.
-  /// <br><br>
-  /// This parameter is optional.<br>
-  /// If this parameter is empty, the page limit options will not be shown.<br>
-  ///
-  final bool? showPageLimitOptions;
-
-  ///
-  /// The page limit options.
-  /// <br><br>
-  /// This parameter is optional.<br>
-  /// If this parameter is empty, the default page limit options will be used.<br>
-  ///
-  final List<int> pageLimitOptions;
-
-  ///
-  /// The callback function when the page limit option is changed.
-  /// <br><br>
-  /// The parameter is <int?> the page limit.<br>
-  /// This parameter is optional.<br>
-  /// This parameter must exist if "showPageLimitOptions" is true.<br>
-  ///
-  final Function(int?)? onPageLimitChanged;
-
-  ///
   /// The icon of the previous page button.
   /// <br><br>
   /// This parameter is optional.<br>
@@ -181,10 +150,6 @@ class FlutterCustomPagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(
-        showPageLimitOptions == true && pageLimitOptions.contains(limitPerPage),
-        'value "limitPerPage" must be included in "pageLimitOptions" listing');
-
     double _fontSize = textStyle?.fontSize ?? 14;
     double _iconRatio = 1.5;
     double _iconSize = _fontSize * _iconRatio;
@@ -201,122 +166,83 @@ class FlutterCustomPagination extends StatelessWidget {
       direction: Axis.horizontal,
       alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Tooltip(
-              message: 'Back to first page',
-              child: IconButton(
-                onPressed: _hasPrevPage
-                    ? () => (onBackToFirstPage != null
-                        ? onBackToFirstPage!(1)
-                        : onPreviousPage(1))
-                    : null,
-                iconSize: _iconSize,
-                splashRadius: _iconSize + 4,
-                icon: Icon(
-                  backToFirstPageIcon ?? Icons.first_page,
-                  color: _hasPrevPage
-                      ? textStyle?.color
-                      : textStyle?.color?.withOpacity(0.5),
-                  size: _iconSize,
-                ),
-              ),
+        Tooltip(
+          message: 'Back to first page',
+          child: IconButton(
+            onPressed: _hasPrevPage
+                ? () => (onBackToFirstPage != null
+                    ? onBackToFirstPage!(1)
+                    : onPreviousPage(1))
+                : null,
+            iconSize: _iconSize,
+            splashRadius: _iconSize + 4,
+            icon: Icon(
+              backToFirstPageIcon ?? Icons.first_page,
+              color: _hasPrevPage
+                  ? textStyle?.color
+                  : textStyle?.color?.withOpacity(0.5),
+              size: _iconSize,
             ),
-            Tooltip(
-              message: 'Previous page',
-              child: IconButton(
-                onPressed:
-                    _hasPrevPage ? () => onPreviousPage(currentPage - 1) : null,
-                iconSize: _iconSize,
-                splashRadius: _iconSize + 4,
-                icon: Icon(
-                  previousPageIcon ?? Icons.keyboard_arrow_left,
-                  color: _hasPrevPage
-                      ? textStyle?.color
-                      : textStyle?.color?.withOpacity(0.5),
-                  size: _iconSize,
-                ),
-              ),
-            ),
-            SizedBox(width: textStyle?.fontSize ?? 14),
-            Text(
-              'Page $currentPage of $_lastPage',
-              style: textStyle,
-            ),
-            SizedBox(width: textStyle?.fontSize ?? 14),
-            Tooltip(
-              message: 'Next page',
-              child: IconButton(
-                onPressed:
-                    _hasNextPage ? () => onPreviousPage(currentPage + 1) : null,
-                iconSize: _iconSize,
-                splashRadius: _iconSize + 4,
-                icon: Icon(
-                  nextPageIcon ?? Icons.keyboard_arrow_right,
-                  color: _hasNextPage
-                      ? textStyle?.color
-                      : textStyle?.color?.withOpacity(0.5),
-                  size: _iconSize,
-                ),
-              ),
-            ),
-            Tooltip(
-              message: 'Go to last page',
-              child: IconButton(
-                onPressed: _hasNextPage
-                    ? () => (onGoToLastPage != null
-                        ? onGoToLastPage!(_lastPage)
-                        : onNextPage(_lastPage))
-                    : null,
-                iconSize: _iconSize,
-                splashRadius: _iconSize + 4,
-                icon: Icon(
-                  goToLastPageIcon ?? Icons.last_page,
-                  color: _hasNextPage
-                      ? textStyle?.color
-                      : textStyle?.color?.withOpacity(0.5),
-                  size: _iconSize,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-        SizedBox(width: (textStyle?.fontSize ?? 14) * 2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: textStyle?.fontSize ?? 14),
-            if (showPageLimitOptions == true)
-              SizedBox(
-                width: 60,
-                child: DropdownButton<int>(
-                  value: limitPerPage,
-                  style: textStyle,
-                  isExpanded: true,
-                  items: pageLimitOptions
-                      .map(
-                        (int item) => DropdownMenuItem<int>(
-                            value: item, child: Text('$item')),
-                      )
-                      .toList(),
-                  onChanged: onPageLimitChanged != null
-                      ? (int? pageLimit) => onPageLimitChanged!(pageLimit)
-                      : null,
-                  selectedItemBuilder: (context) => pageLimitOptions
-                      .map(
-                        (int item) => Center(child: Text('$item')),
-                      )
-                      .toList(),
-                  isDense: true,
-                ),
-              ),
-            const SizedBox(width: 5),
-            Text('items per page', style: textStyle),
-          ],
+        Tooltip(
+          message: 'Previous page',
+          child: IconButton(
+            onPressed:
+                _hasPrevPage ? () => onPreviousPage(currentPage - 1) : null,
+            iconSize: _iconSize,
+            splashRadius: _iconSize + 4,
+            icon: Icon(
+              previousPageIcon ?? Icons.keyboard_arrow_left,
+              color: _hasPrevPage
+                  ? textStyle?.color
+                  : textStyle?.color?.withOpacity(0.5),
+              size: _iconSize,
+            ),
+          ),
+        ),
+        SizedBox(width: textStyle?.fontSize ?? 14),
+        Text(
+          'Page $currentPage of $_lastPage',
+          style: textStyle,
+        ),
+        SizedBox(width: textStyle?.fontSize ?? 14),
+        Tooltip(
+          message: 'Next page',
+          child: IconButton(
+            onPressed:
+                _hasNextPage ? () => onPreviousPage(currentPage + 1) : null,
+            iconSize: _iconSize,
+            splashRadius: _iconSize + 4,
+            icon: Icon(
+              nextPageIcon ?? Icons.keyboard_arrow_right,
+              color: _hasNextPage
+                  ? textStyle?.color
+                  : textStyle?.color?.withOpacity(0.5),
+              size: _iconSize,
+            ),
+          ),
+        ),
+        Tooltip(
+          message: 'Go to last page',
+          child: IconButton(
+            onPressed: _hasNextPage
+                ? () => (onGoToLastPage != null
+                    ? onGoToLastPage!(_lastPage)
+                    : onNextPage(_lastPage))
+                : null,
+            iconSize: _iconSize,
+            splashRadius: _iconSize + 4,
+            icon: Icon(
+              goToLastPageIcon ?? Icons.last_page,
+              color: _hasNextPage
+                  ? textStyle?.color
+                  : textStyle?.color?.withOpacity(0.5),
+              size: _iconSize,
+            ),
+          ),
         ),
       ],
     );
