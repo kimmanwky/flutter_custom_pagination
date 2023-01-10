@@ -25,7 +25,8 @@ class FlutterCustomPagination extends StatelessWidget {
             'onPageLimitChanged must not be empty if showPageLimitOptions is true'),
         assert(currentPage > 0, 'currentPage must be greater than 0'),
         assert(limitPerPage > 0, 'limitPerPage must be greater than 0'),
-        assert(totalDataCount >= 0, 'totalDataCount must be greater than or equal to 0');
+        assert(totalDataCount >= 0,
+            'totalDataCount must be greater than or equal to 0');
 
   ///
   /// The current page number.
@@ -180,14 +181,18 @@ class FlutterCustomPagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(showPageLimitOptions == true && pageLimitOptions.contains(limitPerPage),
+    assert(
+        showPageLimitOptions == true && pageLimitOptions.contains(limitPerPage),
         'value "limitPerPage" must be included in "pageLimitOptions" listing');
 
     double _fontSize = textStyle?.fontSize ?? 14;
     double _iconRatio = 1.5;
     double _iconSize = _fontSize * _iconRatio;
-    int _lastPage = (totalDataCount / limitPerPage).ceil() <= 0 ? 1 : (totalDataCount / limitPerPage).ceil();
-    assert(currentPage <= _lastPage, 'currentPage must be less than or equal to the last page number');
+    int _lastPage = (totalDataCount / limitPerPage).ceil() <= 0
+        ? 1
+        : (totalDataCount / limitPerPage).ceil();
+    assert(currentPage <= _lastPage,
+        'currentPage must be less than or equal to the last page number');
 
     bool _hasPrevPage = currentPage > 1;
     bool _hasNextPage = currentPage < _lastPage;
@@ -204,13 +209,18 @@ class FlutterCustomPagination extends StatelessWidget {
             Tooltip(
               message: 'Back to first page',
               child: IconButton(
-                onPressed:
-                    _hasPrevPage ? () => (onBackToFirstPage != null ? onBackToFirstPage!(1) : onPreviousPage(1)) : null,
+                onPressed: _hasPrevPage
+                    ? () => (onBackToFirstPage != null
+                        ? onBackToFirstPage!(1)
+                        : onPreviousPage(1))
+                    : null,
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
                   backToFirstPageIcon ?? Icons.first_page,
-                  color: _hasPrevPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
+                  color: _hasPrevPage
+                      ? textStyle?.color
+                      : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
               ),
@@ -218,12 +228,15 @@ class FlutterCustomPagination extends StatelessWidget {
             Tooltip(
               message: 'Previous page',
               child: IconButton(
-                onPressed: _hasPrevPage ? () => onPreviousPage(currentPage - 1) : null,
+                onPressed:
+                    _hasPrevPage ? () => onPreviousPage(currentPage - 1) : null,
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
                   previousPageIcon ?? Icons.keyboard_arrow_left,
-                  color: _hasPrevPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
+                  color: _hasPrevPage
+                      ? textStyle?.color
+                      : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
               ),
@@ -237,12 +250,15 @@ class FlutterCustomPagination extends StatelessWidget {
             Tooltip(
               message: 'Next page',
               child: IconButton(
-                onPressed: _hasNextPage ? () => onPreviousPage(currentPage + 1) : null,
+                onPressed:
+                    _hasNextPage ? () => onPreviousPage(currentPage + 1) : null,
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
                   nextPageIcon ?? Icons.keyboard_arrow_right,
-                  color: _hasNextPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
+                  color: _hasNextPage
+                      ? textStyle?.color
+                      : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
               ),
@@ -251,13 +267,17 @@ class FlutterCustomPagination extends StatelessWidget {
               message: 'Go to last page',
               child: IconButton(
                 onPressed: _hasNextPage
-                    ? () => (onGoToLastPage != null ? onGoToLastPage!(_lastPage) : onNextPage(_lastPage))
+                    ? () => (onGoToLastPage != null
+                        ? onGoToLastPage!(_lastPage)
+                        : onNextPage(_lastPage))
                     : null,
                 iconSize: _iconSize,
                 splashRadius: _iconSize + 4,
                 icon: Icon(
                   goToLastPageIcon ?? Icons.last_page,
-                  color: _hasNextPage ? textStyle?.color : textStyle?.color?.withOpacity(0.5),
+                  color: _hasNextPage
+                      ? textStyle?.color
+                      : textStyle?.color?.withOpacity(0.5),
                   size: _iconSize,
                 ),
               ),
@@ -279,10 +299,13 @@ class FlutterCustomPagination extends StatelessWidget {
                   isExpanded: true,
                   items: pageLimitOptions
                       .map(
-                        (int item) => DropdownMenuItem<int>(value: item, child: Text('$item')),
+                        (int item) => DropdownMenuItem<int>(
+                            value: item, child: Text('$item')),
                       )
                       .toList(),
-                  onChanged: onPageLimitChanged != null ? (int? pageLimit) => onPageLimitChanged!(pageLimit) : null,
+                  onChanged: onPageLimitChanged != null
+                      ? (int? pageLimit) => onPageLimitChanged!(pageLimit)
+                      : null,
                   selectedItemBuilder: (context) => pageLimitOptions
                       .map(
                         (int item) => Center(child: Text('$item')),

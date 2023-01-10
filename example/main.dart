@@ -75,7 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
           onNextPage: _onChangePage,
           onGoToLastPage: _onChangePage,
           backgroundColor: Theme.of(context).colorScheme.background,
-          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.brown, fontSize: 14),
+          textStyle: Theme.of(context)
+              .textTheme
+              .labelMedium
+              ?.copyWith(color: Colors.brown, fontSize: 14),
           showPageLimitOptions: true,
           pageLimitOptions: pageLimitOptions,
           onPageLimitChanged: _onPageLimitChanged,
@@ -87,7 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: sampleData.isEmpty
-            ? const SizedBox(height: 300, child: Center(child: CircularProgressIndicator()))
+            ? const SizedBox(
+                height: 300, child: Center(child: CircularProgressIndicator()))
             : Column(
                 children: [
                   ListView.builder(
@@ -137,7 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         sampleData = [];
       });
-      final response = await dio.get('/posts?_page=$currentPage&_limit=$currentPageLimit');
+      final response =
+          await dio.get('/posts?_page=$currentPage&_limit=$currentPageLimit');
       setState(() {
         sampleData = response.data;
 
