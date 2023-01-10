@@ -48,8 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
   );
 
   int currentPage = 1;
-  int currentPageLimit = 10;
-  List<int> pageLimitOptions = [10, 30, 50];
+  int pageLimit = 10;
+  List<int> pageLimitOptions = [10, 25, 50];
   int totalDataCount = 100;
   dynamic sampleData = [];
 
@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         FlutterCustomPagination(
           currentPage: currentPage,
-          limitPerPage: currentPageLimit,
+          limitPerPage: pageLimit,
           totalDataCount: totalDataCount,
           onPreviousPage: _onChangePage,
           onBackToFirstPage: _onChangePage,
@@ -138,11 +138,12 @@ class _MyHomePageState extends State<MyHomePage> {
           goToLastPageIcon: Icons.last_page,
         ),
         FlutterCustomPaginationOptions(
-          limitPerPage: currentPageLimit,
+          limitPerPage: pageLimit,
           backgroundColor: Theme.of(context).colorScheme.background,
           textStyle: _textStyle,
           pageLimitOptions: pageLimitOptions,
           onPageLimitChanged: _onPageLimitChanged,
+          text: 'items per page',
         ),
       ],
     );
@@ -162,15 +163,16 @@ class _MyHomePageState extends State<MyHomePage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         FlutterCustomPaginationOptions(
-          limitPerPage: currentPageLimit,
+          limitPerPage: pageLimit,
           backgroundColor: Theme.of(context).colorScheme.background,
           textStyle: _textStyle,
           pageLimitOptions: pageLimitOptions,
           onPageLimitChanged: _onPageLimitChanged,
+          text: 'items per page',
         ),
         FlutterCustomPagination(
           currentPage: currentPage,
-          limitPerPage: currentPageLimit,
+          limitPerPage: pageLimit,
           totalDataCount: totalDataCount,
           onPreviousPage: _onChangePage,
           onBackToFirstPage: _onChangePage,
@@ -187,10 +189,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _onPageLimitChanged(int? pageLimit) async {
+  _onPageLimitChanged(int? limit) async {
     setState(() {
       currentPage = 1;
-      currentPageLimit = pageLimit ?? 15;
+      pageLimit = limit ?? 15;
     });
     await _getSampleData();
   }
@@ -208,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
         sampleData = [];
       });
       final response =
-          await dio.get('/posts?_page=$currentPage&_limit=$currentPageLimit');
+          await dio.get('/posts?_page=$currentPage&_limit=$pageLimit');
       setState(() {
         sampleData = response.data;
 

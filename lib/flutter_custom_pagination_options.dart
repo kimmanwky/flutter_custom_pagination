@@ -18,15 +18,12 @@ class FlutterCustomPaginationOptions extends StatelessWidget {
   /// The limit per page.
   /// <br><br>
   /// Must be greater than 0.<br>
-  /// Must be included in the "pageLimitOptions" listing if "showPageLimitOptions" is true.<br>
   ///
   final int limitPerPage;
 
   ///
   /// The page limit options.
   /// <br><br>
-  /// This parameter is optional.<br>
-  /// If this parameter is empty, the default page limit options will be used.<br>
   ///
   final List<int> pageLimitOptions;
 
@@ -34,8 +31,6 @@ class FlutterCustomPaginationOptions extends StatelessWidget {
   /// The callback function when the page limit option is changed.
   /// <br><br>
   /// The parameter is <int?> the page limit.<br>
-  /// This parameter is optional.<br>
-  /// This parameter must exist if "showPageLimitOptions" is true.<br>
   ///
   final Function(int?)? onPageLimitChanged;
 
