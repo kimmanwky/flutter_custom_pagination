@@ -1,3 +1,5 @@
+library flutter_custom_pagination_options;
+
 import 'package:flutter/material.dart';
 
 class FlutterCustomPaginationOptions extends StatelessWidget {
