@@ -10,7 +10,7 @@ class FlutterCustomPaginationOptions extends StatelessWidget {
     required this.onPageLimitChanged,
     this.backgroundColor,
     this.textStyle,
-    this.text = 'items per page',
+    this.text = '',
     this.isDense = false,
   });
 
@@ -104,7 +104,7 @@ class FlutterCustomPaginationOptions extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 5),
-          Text('items per page', style: textStyle),
+          Text(text, style: textStyle),
         ],
       ),
     );
