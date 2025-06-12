@@ -10,7 +10,7 @@ class FlutterCustomPaginationOptions extends StatelessWidget {
     required this.onPageLimitChanged,
     this.backgroundColor,
     this.textStyle,
-    this.text = '',
+    this.text = 'item per page',
     this.isDense = false,
   });
 
